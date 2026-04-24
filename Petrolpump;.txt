@@ -1,0 +1,46 @@
+CREATE DATABASE Petrolpump;
+USE Petrolpump;
+CREATE TABLE Fuels(
+fuelname VARCHAR(20) NOT NULL,
+fuelid INT PRIMARY KEY,
+density DECIMAL (5,2)
+);
+CREATE TABLE Fuelprice(
+petrolprice DECIMAL(5,2),
+dieselprice DECIMAL(5,2),
+powerpetrolprice DECIMAL(5,2)
+);
+ALTER TABLE Fuelprice ADD cal_date date;
+CREATE TABLE Employees(
+name VARCHAR(100) NOT NULL,
+employeeid INT PRIMARY KEY,
+salary  INT,
+days_of_working_permonth INT
+);
+CREATE TABLE Fuelsales(
+cal_date date,
+petrolsale DECIMAL(9,2),
+dieselsale DECIMAL(5,2),
+powersale DECIMAL(5,2),
+totalsale DECIMAL(9,2),
+petrol_s_liters DECIMAL(9,3),
+diesel_s_liters DECIMAL(9,3),
+power_s_liters DECIMAL(9,3),
+total_li_sale DECIMAL(9,3)
+);
+CREATE TABLE Calender(
+cal_date date,
+Month_num INT,
+month_name VARCHAR(20),
+year YEAR,
+weekday_num INT,
+weekday_name VARCHAR(20)
+);
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+tables are:
+calender,
+employees,
+fuelprice,
+fuels,
+fuelsales;
+ 
