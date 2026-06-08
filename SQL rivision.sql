@@ -67,22 +67,58 @@ SELECT * FROM departments;
 SELECT * FROM employees;
 SELECT * FROM sales;
 
-SELECT emp_name,
-       dept_id,
-       salary
-FROM employees e
-WHERE salary >
-(
-    SELECT AVG(salary)
-    FROM employees
-    WHERE dept_id = e.dept_id
-);
-
-SELECT e.emp_id,e.emp_name,d.manager_name, d.dept_id FROM employees e INNER JOIN departments d ON e.dept_id = d.dept_id;
-
 SELECT * FROM employees;
 
-SELECT max(salary) FROM employees;
+
 
 INSERT INTO employees VALUES(13,"rugved",110000,104,NULL);
+
+SELECT emp_name,salary FROM employees e WHERE salary > (SELECT AVG(salary) FROM employees WHERE dept_id = e.dept_id); 
+
+SELECT e.emp_name,d.manager_name FROM employees e INNER JOIN departments d ON e.dept_id= d.dept_id;
+
+SELECT e.emp_name,d.manager_name FROM employees e LEFT JOIN departments d ON e.dept_id = d.dept_id WHERE d.manager_name IS NULL;
+
+SELECT emp_name FROM employees WHERE emp_id IN (SELECT emp_id FROM departments WHERE manager_name IS NULL);
+SELECT dept_name,total_sales
+FROM(
+SELECT d.dept_name,
+           SUM(s.sale_amount) AS total_sales
+    FROM departments d
+    JOIN employees e
+    ON d.dept_id = e.dept_id
+    JOIN sales s
+    ON e.emp_id = s.emp_id
+    GROUP BY d.dept_name) t
+    WHERE total_sales > 10000;
+    
+SELECT dept_name,
+       emp_name,
+       total_sales
+FROM
+(
+    SELECT d.dept_name,
+           e.emp_name,
+           SUM(s.sale_amount) AS total_sales,
+           ROW_NUMBER() OVER (
+               PARTITION BY d.dept_name
+               ORDER BY SUM(s.sale_amount) DESC
+           ) AS rn
+    FROM employees e
+    JOIN departments d
+        ON e.dept_id = d.dept_id
+    JOIN sales s
+        ON e.emp_id = s.emp_id
+    GROUP BY d.dept_name,
+             e.emp_id,
+             e.emp_name
+) t
+WHERE rn <= 3;
+
+
+SELECT dept_id FROM employees GROUP BY dept_id HAVING count(*) > 2;
+
+SELECT e.emp_name,d.dept_name,e.dept_id FROM employees e JOIN departments d ON e.dept_id = d.dept_id JOIN(SELECT dept_id FROM employees GROUP BY dept_id HAVING count(*) > 2) t 
+ON e.dept_id = t.dept_id;
+
 
