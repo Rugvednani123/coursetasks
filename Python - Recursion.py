@@ -49,21 +49,6 @@ n = int(input("enter the number:"))
 for i in range(n):
     print(fib(i),end = " ")
 '''        
-#Develop a recursive function to find the maximum value in a list of integers.
-'''def find_max(nums):
-    if len(nums) == 1:
-        return nums[0]
-
-    max_rest = find_max(nums[1:])
-
-    if nums[0] > max_rest:
-        return nums[0]
-    else:
-        return max_rest
-
-nums = [10, 5, 25, 8, 15]
-
-print("Maximum value =", find_max(nums))'''
 
 #Implement a recursive binary search algorithm to find an element in a sorted list.
 
